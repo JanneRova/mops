@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <title>Minilaskin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h2>Minilaskin</h2>
+  <form id="laskin">
+    <label>Ensimmäinen luku:</label><br>
+    <input type="number" id="luku1" required><br>
+
+    <label>Toinen luku:</label><br>
+    <input type="number" id="luku2" required><br>
+
+    <button type="submit">Laske summa</button>
+  </form>
+
+  <h3>Tulos: <span id="tulos">-</span></h3>
+
+  <script>
+    document.getElementById("laskin").addEventListener("submit", function(event) {
+      event.preventDefault(); 
+
+      const luku1 = parseFloat(document.getElementById("luku1").value);
+      const luku2 = parseFloat(document.getElementById("luku2").value);
+      const summa = luku1 + luku2;
+
+      document.getElementById("tulos").textContent = summa;
+    });
+  </script>
+</body>
+</html>
