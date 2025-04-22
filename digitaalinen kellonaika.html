@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitaalinen kello</title>
+    <style>
+        #kello {
+            font-size: 48px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Reaaliaikainen kello</h2>
+    <div id="kello"></div>
+
+    <script>
+        function naytaAika() {
+            let nyt = new Date();
+            let tunnit = nyt.getHours();
+            let minuutit = nyt.getMinutes();
+            let sekunnit = nyt.getSeconds();
+
+            // Lisää nolla eteen, jos minuutit tai sekunnit ovat alle 10
+            minuutit = minuutit < 10 ? '0' + minuutit : minuutit;
+            sekunnit = sekunnit < 10 ? '0' + sekunnit : sekunnit;
+
+            let aika = tunnit + ':' + minuutit + ':' + sekunnit;
+            document.getElementById('kello').textContent = aika;
+        }
+
+        // Päivitä kellonaika joka sekunti
+        setInterval(naytaAika, 1000);
+        naytaAika(); // Kutsutaan heti, jotta aika näkyy välittömästi
+    </script>
+</body>
+</html>
