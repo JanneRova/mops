@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Image Fetcher</title>
+</head>
+<body>
+    <button id="haekuva">Satunnainen koirakuva</button>
+    <img id="koirakuva" style="display: none;" alt="Dog Image">
+    
+    <script>
+    document.getElementById('haekuva').addEventListener('click', function() {
+        fetch('https://api.thedogapi.com/v1/images/search')
+        .then(response => response.json())
+        .then(data => {
+            const kuvaUrl = data[0].url;
+            const imgElement = document.getElementById('koirakuva');
+            imgElement.src = kuvaUrl;
+            imgElement.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Virhe: ', error);
+        });
+    });
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puheentunnistus</title>
+</head>
+<body>
+    <h1>Puheentunnistus</h1>
+    <button id="startButton">Aloita Puheentunnistus</button>
+    <p id="result"></p>
+    <script>
+        const startButton = document.getElementById('startButton');
+        const resultDisplay = document.getElementById('result');
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'fi-FI';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                resultDisplay.textContent = 'Tunnistettu puhe: ' + transcript;
+            };
+
+            recognition.onerror = function(event) {
+                resultDisplay.textContent = 'Virhe puheentunnistuksessa: ' + event.error;
+            };
+
+            recognition.onend = function() {
+                resultDisplay.textContent += ' (Puheentunnistus päättynyt)';
+            };
+
+            startButton.addEventListener('click', function() {
+                try {
+                    recognition.start();
+                    resultDisplay.textContent = 'Kuunnellaan...';
+                } catch (e) {
+                    resultDisplay.textContent = 'Virhe aloituksessa: ' + e.message;
+                }
+            });
+        } else {
+            resultDisplay.textContent = 'Selaimesi ei tue puheentunnistusta.';
+            startButton.disabled = true;
+        }
+    </script>    
+</body>
+</html>

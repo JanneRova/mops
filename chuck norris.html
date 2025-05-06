@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuck Norris Jokes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #1fc8db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #1aa9b8;
+        }
+        p {
+            font-size: 18px;
+            margin-top: 20px;
+            text-align: center;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chuck Norris Jokes</h1>
+    <button id="getJokeButton">Get a Chuck Norris Joke</button>
+    <p id="jokeDisplay">Click the button to get a joke!</p>
+    <script>
+        const getJokeButton = document.getElementById('getJokeButton');
+        const jokeDisplay = document.getElementById('jokeDisplay');
+
+        async function fetchJoke() {
+            try {
+                const response = await fetch('https://api.chucknorris.io/jokes/random', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                jokeDisplay.textContent = data.value;
+            } catch (error) {
+                jokeDisplay.textContent = 'Oops, something went wrong! Try again.';
+                console.error('Error fetching joke:', error);
+            }
+        }
+
+        getJokeButton.addEventListener('click', fetchJoke);
+    </script>
+</body>
+</html>

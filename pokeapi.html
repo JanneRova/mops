@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon-hakusovellus</title>
+</head>
+<body>
+    <h1>Pokémon-hakusovellus</h1>
+    <form id="pokemonForm">
+        <input type="text" id="pokemonNimi" placeholder="Anna Pokémonin nimi" required>
+        <button type="submit">Hae Pokémon</button>
+    </form>
+    <div id="pokemonTiedot"></div>
+
+    <script>
+    document.getElementById('pokemonForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Estetään lomakkeen uudelleenlataus
+        let pokemonNimi = document.getElementById('pokemonNimi').value.toLowerCase();
+        let apiURL = `https://pokeapi.co/api/v2/pokemon/${pokemonNimi}`;
+
+        fetch(apiURL)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Pokémonia ei löydy.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            let nimi = data.name.charAt(0).toUpperCase() + data.name.slice(1);
+            let kuva = data.sprites.front_default;
+            let tyyppi = data.types.map(type => type.type.name).join(', ');
+            let paino = data.weight / 10; // Paino kilogrammoina
+            let pituus = data.height / 10; // Pituus metreinä
+
+            document.getElementById('pokemonTiedot').innerHTML = `
+                <h2>${nimi}</h2>
+                <img src="${kuva}" alt="${nimi}">
+                <p><strong>Tyyppi:</strong> ${tyyppi}</p>
+                <p><strong>Paino:</strong> ${paino} kg</p>
+                <p><strong>Pituus:</strong> ${pituus} m</p>
+            `;
+        })
+        .catch(error => {
+            document.getElementById('pokemonTiedot').innerHTML = `<p>${error.message}</p>`;
+        });
+    });
+    </script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: yellow;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #ffcb05;
+        text-shadow: 2px 2px 4px #3c5aa6;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+    #pokemonForm {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    #pokemonNimi {
+        padding: 10px;
+        font-size: 1em;
+        border: 2px solid #3c5aa6;
+        border-radius: 5px;
+        width: 200px;
+        margin-right: 10px;
+    }
+
+    #pokemonNimi:focus {
+        outline: none;
+        border-color: #ffcb05;
+        box-shadow: 0 0 5px #ffcb05;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 1em;
+        background-color: #3c5aa6;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #2a406e;
+    }
+
+    #pokemonTiedot {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        text-align: center;
+    }
+
+    #pokemonTiedot h2 {
+        color: #2a406e;
+        margin-top: 0;
+    }
+
+    #pokemonTiedot img {
+        max-width: 150px;
+        margin: 10px 0;
+    }
+
+    #pokemonTiedot p {
+        margin: 5px 0;
+        color: #333;
+    }
+
+    #pokemonTiedot strong {
+        color: #3c5aa6;
+    }
+</style>
+
+</body>
+</html>

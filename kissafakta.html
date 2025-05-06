@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kissafakta</title>
+</head>
+<body>
+    <button id="haeFakta">Hae uusi kissafakta</button>
+    <div id="fakta"></div>
+
+    <script>
+    document.getElementById('haeFakta').addEventListener('click', function() {
+        fetch('https://catfact.ninja/fact')
+        .then(response => response.json()) // Muutetaan vastaus JSON-muotoon
+        .then(data => {
+            document.getElementById('fakta').textContent = data.fact; // Näytetään saatu kissafakta sivulla
+        })
+        .catch(error => {
+            document.getElementById('fakta').textContent = 'Virhe haettaessa kissafaktaa. Yritä uudelleen.';
+            console.error('Virhe:', error); // Näytetään virhe konsolissa
+        });
+    });
+    </script>
+</body>
+</html>

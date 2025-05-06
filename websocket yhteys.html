@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!hi>WebSocket - yhteys</hi>
+<button id="sendMessage">Läheta viesti!</button>
+<p id="status">Yhdistetään ...</p>
+
+<script>
+    let socket = new WebSocket('wss://echo.websocket.org');
+
+    socket.onopen = function() {
+        document.getElementById('status').textContent = 'Yhdistetty WebSocket -palvelimeen!';
+    };
+
+    socket.onmessage = function(event) {
+        alert('Vastaanotettu viesti: ' + event.data);
+    };
+
+    document.getElementById('sendMessage').addEventListener('click', function() {
+        socket.send('Hei WebSocket!');
+    });
+</script>
+
+</body>
+</html>

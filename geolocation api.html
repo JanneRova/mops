@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation API Esimerkki</title>
+</head>
+<body>
+    <h1>Hae nykyinen sijaintisi</h1>
+    <button onclick="getLocation()">Hae sijainti</button>
+    <p id="output"></p>
+
+    <script>
+        function getLocation() {
+            const output = document.getElementById("output");
+
+            if (navigator.geolocation) {
+                output.innerText = "Haetaan sijaintia...";
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                output.innerText = "Selaimesi ei tue Geolocation API:a.";
+            }
+        }
+
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            document.getElementById("output").innerText = 
+                `Sijaintisi: Leveysaste: ${latitude}, Pituusaste: ${longitude}`;
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById("output").innerText = "Käyttäjä esti sijainnin käytön.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById("output").innerText = "Sijaintitietoja ei ole saatavilla.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById("output").innerText = "Sijainnin haku aikakatkaistiin.";
+                    break;
+                default:
+                    document.getElementById("output").innerText = "Tuntematon virhe tapahtui.";
+            }
+        }
+    </script>
+</body>
+</html>

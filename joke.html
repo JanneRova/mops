@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satunnainen Vitsi</title>
+</head>
+<body>
+    <h1>Satunnainen vitsi</h1> 
+    <button id="haeVitsi">Hae vitsi</button> 
+    <div id="vitsi"></div> 
+
+    <script>
+    const button = document.getElementById('haeVitsi');
+    if (button) {
+        button.addEventListener('click', function() {
+            fetch('https://v2.jokeapi.dev/joke/Any')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const vitsiDiv = document.getElementById('vitsi');
+                if (data.type === 'single') {
+                    vitsiDiv.textContent = data.joke;
+                } else {
+                    vitsiDiv.innerHTML = `${data.setup}<br><br><strong>${data.delivery}</strong>`;
+                }
+            })
+            .catch(error => {
+                console.error('Virhe:', error);
+                const vitsiDiv = document.getElementById('vitsi');
+                vitsiDiv.textContent = 'Vitsin haku epäonnistui. Yritä uudelleen!';
+            });
+        });
+    } else {
+        console.error('Button with ID "haeVitsi" not found.');
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Storage Demo</title>
+</head>
+<body>
+    <h1>Syötä nimesi</h1>
+ 
+    <input type="text" id="nameInput" placeholder="Syötä nimi">
+ 
+    <button id="saveButton" onclick="saveToSession()">Tallenna nimi</button>
+    <button id="getButton" onclick="getFromSession()">Hae nimi</button>
+    <button id="clearButton" onclick="clearSession()">Poista nimi</button>
+ 
+    <p id="result"></p>
+ 
+    <script>
+    // funktio Tallentaa dataa SessionStorageen
+    function saveToSession() {
+        let name = document.getElementById("nameInput").value;
+        sessionStorage.setItem("username", name);
+        alert("NIMI tallennettu sessionStorageen!");
+    }
+ 
+    // tässä funktio Hakee dataa SessionStoragesta
+    function getFromSession() {
+        let storedName = sessionStorage.getItem("username");
+        if (storedName) {
+            document.getElementById("result").textContent = `Tallennettu nimi: ${storedName}`;
+        } else {
+            document.getElementById("result").textContent = "Ei tallennettua nimeä.";
+        }
+    }
+ 
+    // tässä funktio Poistaa data SessionStoragesta
+    function clearSession() {
+        sessionStorage.removeItem("username");
+        alert("NIMI poistettu Session Storagesta!");
+        document.getElementById("result").textContent = "";
+    }
+    </script>
+</body>
+</html>

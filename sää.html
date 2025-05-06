@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sääsovellus</title>
+</head>
+<body>
+    <h1>Sääsovellus</h1>
+    <p>Kirjoita kaupunki nimi ja paina "Hae sää"</p>
+    <form id="saalomake">
+      <input type="text" id="kaupunki" placeholder="Kaupunki" required>
+      <button type="submit">Hae sää</button>
+    </form>
+    <div id="saatiedot"></div>
+    
+    <script>
+        document.getElementById('saalomake').addEventListener('submit', function(event) {
+          event.preventDefault(); 
+        
+          const kaupunki = document.getElementById('kaupunki').value.trim();
+          const apikey = '30d589bdacd181c04c0406cf33c921d0'; 
+          const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(kaupunki)}&appid=${apikey}&units=metric&lang=fi`;
+        
+          fetch(apiUrl)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Kaupunkia ei löydy');
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (data.cod === 200) {
+                const lampotila = data.main.temp;
+                const kuvaus = data.weather[0].description;
+                const tuuli = data.wind.speed;
+                const icon = data.weather[0].icon;
+        
+                document.getElementById('saatiedot').innerHTML = `
+                  <h2>Sää kaupungissa ${data.name}</h2>
+                  <p><strong>Lämpötila:</strong> ${lampotila} °C</p>
+                  <p><strong>Kuvaus:</strong> ${kuvaus}</p>
+                  <p><strong>Tuulen nopeus:</strong> ${tuuli} m/s</p>
+                  <img src="https://openweathermap.org/img/wn/${icon}.png" alt="Sääkuvake">
+                `;
+              } else {
+                document.getElementById('saatiedot').innerHTML = `<p>Kaupunkia ei löydy. Tarkista nimi ja yritä uudelleen!</p>`;
+              }
+            })
+            .catch(error => {
+              console.error('Virhe:', error);
+              document.getElementById('saatiedot').innerHTML = `<p>Virhe haettaessa säätietoja. Yritä uudelleen myöhemmin.</p>`;
+            });
+        });
+    </script>
+</body>
+</html>
